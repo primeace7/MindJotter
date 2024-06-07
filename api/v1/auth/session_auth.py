@@ -132,7 +132,6 @@ class Auth:
                 filters[key] = val
 
         new_insight = Insights(**filters)
-        new_insight.created_at += timedelta(minutes=1)
         self._db.add(new_insight)
         self._db.save()
         return new_insight.id

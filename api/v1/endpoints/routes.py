@@ -116,7 +116,7 @@ def entries():
     return {'message': 'Success'}
 
 @incoming.route('/insights', strict_slashes=False, methods=[
-    'GET'])
+    'GET', 'POST'])
 def generate_insight():
     '''
     Generate an insight by making inference to ollama
@@ -124,17 +124,26 @@ def generate_insight():
     month
     '''
     session_id = request.args.get('id')
-    result = generate_insights(session_id=session_id)
-    try:
-        user_id = auth.get_userId_from_sessionId(session_id=session_id)
-    except ValueError:
-        abort(401)
 
-    insight_id = auth.new_insight(insight=result, user_id=user_id)
+    if request.method == 'POST':
+        try:
+            user_id = auth.get_userId_from_sessionId(session_id=session_id)
+        except ValueError:
+            abort(401)
 
-    result = make_response({'generated_insight': result, 'insight_id': insight_id})
-    result.content_type = 'text/plain'
-    return result
+        insight = request.get_json().get('insight')
+        auth.new_insight(insight=insight, user_id=user_id)
+        return {'message': 'Success'}
+    else:
+        result = generate_insights(session_id=session_id)
+        try:
+            user_id = auth.get_userId_from_sessionId(session_id=session_id)
+        except ValueError:
+            abort(401)
+
+        result = make_response({'generated_insight': result})
+        result.content_type = 'text/plain'
+        return result
 
 
 @incoming.route('/user', strict_slashes=False, methods=[
