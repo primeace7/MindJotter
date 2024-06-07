@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ</title>
+    <link rel="stylesheet" href="./styles/body.css">
+    <link rel="stylesheet" href="styles/faq.css">
+    <link rel="stylesheet" href="styles/nav.css">
+</head>
+<body>
+    <header>
+        <div class="home"><a href="./index.html" id="home-link">Mind Jotter</a></div>
+        <nav>
+            <input type="checkbox" id="sidebar-active">
+            <label for="sidebar-active" class="open-sidebar-button">
+                <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#000000"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+            </label>
+    
+            <label for="sidebar-active" id="overlay"></label>
+    
+            <div class="links-container">
+                <label for="sidebar-active" class="close-sidebar-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#000000"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </label>
+                <a href="index.html">Home</a>
+                <a href="register.html">Get Started</a>
+                <a href="login.html">Login</a> 
+                <a href="about.html">About</a>
+            </div>
+        </nav>
+    </header>
+
+    <section>
+        <div class="faq-content">
+            <ul class="accordion">
+                <li>
+                    <input type="radio" name="accordion", id="2">
+                    <label for="2" class="faq">Can I use MindJotter on my phone?</label>
+                    <div class="answer">
+                        <p>Absolutely! MindJotter is built to be compatible with all devices and screen sizes. Enjoy!</p>
+                    </div>
+                </li>
+
+                <li>
+                    <input type="radio" name="accordion", id="3">
+                    <label for="3" class="faq">Is MindJotter a tool to cure mental anomaly?</label>
+                    <div class="answer">
+                        <p>No. While MindJotter can help users gain mental clarity and better thinking ability by developing their writing habits, it is not a cure for mental ilnesses. Please consult a physician for such cases.</p>
+                    </div>
+                </li>
+
+                <li>
+                    <input type="radio" name="accordion", id="4">
+                    <label for="4" class="faq">What can I write on MindJotter?</label>
+                    <div class="answer">
+                        <p>Just about anything! MinkJotter is built to be flexible and it places no restrictions on what you can write. It's your writing and your style.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</body>
+</html>

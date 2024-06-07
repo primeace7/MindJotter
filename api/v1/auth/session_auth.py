@@ -8,9 +8,8 @@ from typing import Mapping
 from ..storage.cache import redis_cache
 from redis.exceptions import DataError
 from . import User, Entries, Insights
-from werkzeug.security import generate_password_hash,\
-    check_password_hash
-from sqlalchemy.exc import NoResultFound
+from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy.exc import NoResultFound, IntegrityError
 from uuid import uuid4
 from datetime import datetime, timedelta, timezone
 
@@ -45,9 +44,11 @@ class Auth:
         try:
             user = self._db.find_user(email=email)
             if check_password_hash(user.hashed_password, password):
+                print('password is okay')
                 return True
             return False
         except NoResultFound:
+            print('NO user found')
             return False
 
     def get_userId_from_sessionId(self, session_id: str) -> str | None:
@@ -55,14 +56,11 @@ class Auth:
         Get a user id corresponding to a session id from
         redis cache
         '''
-        try:
-            user_id = self._redis.get(session_id).decode()
-        except DataError:
-            raise ValueError
-
+        user_id = self._redis.get(session_id)
         if not user_id:
-            return None
-        return user_id
+            print('user_id not found from session_id')
+            raise ValueError
+        return user_id.decode()
 
     def get_user(self, user_id: str = None, email: str = None) -> User:
         '''
@@ -83,31 +81,33 @@ class Auth:
         Get all entries of a specific user from the database,
         given the user's session_id
         '''
-        try:
-            user_id = self._redis.get(session_id)
-            if not user_id:
-                raise ValueError
-            user_id = user_id.decode()
+        print(f'looking for this session id in cache {session_id}')
+        user_id = self._redis.get(session_id)
 
-            user = self.get_user(user_id=user_id)
-            return user.entries
-        except (ValueError, DataError):
+        if not user_id:
             raise ValueError
+        
+        user_id = user_id.decode()
+        print(f'found user id from session_id in cache: {user_id}')
+        
+        user = self.get_user(user_id=user_id)
+        return user.entries
 
     def all_user_insights(self, session_id: str) -> list[Insights]:
         '''
         Get all insights generated for a specific user from
         the database, given the user's session_id
         '''
-        try:
-            user_id = self._redis.get(session_id).decode()
-            if not user_id:
-                raise ValueError
+        print(f'looking for this session id in cache {session_id}')
+        user_id = self._redis.get(session_id)
 
-            user = self.get_user(user_id=user_id)
-            return user.insights
-        except ValueError:
-            raise
+        if not user_id:
+            raise ValueError
+        
+        user_id = user_id.decode()
+        
+        user = self.get_user(user_id=user_id)
+        return user.insights
 
     def new_entry(self, **kwargs) -> None:
         '''
@@ -122,7 +122,7 @@ class Auth:
         self._db.add(new_entry)
         self._db.save()
 
-    def new_insight(self, **kwargs) -> None:
+    def new_insight(self, **kwargs) -> str:
         '''
         Generate a new insight and save in database
         '''
@@ -132,8 +132,10 @@ class Auth:
                 filters[key] = val
 
         new_insight = Insights(**filters)
+        new_insight.created_at += timedelta(minutes=1)
         self._db.add(new_insight)
         self._db.save()
+        return new_insight.id
 
     def new_user(self, data: Mapping) -> None:
         '''
@@ -148,8 +150,11 @@ class Auth:
             if data.get(key) is None:
                 raise ValueError
 
-        if self.get_user(email=data.get('email')):
-            raise ValueError
+            try:
+                if self.get_user(email=data.get('email')):
+                    raise TypeError
+            except ValueError:
+                continue
 
         new_user = User(firstname=data.get('firstname'),
                         email=data.get('email'),
@@ -157,20 +162,18 @@ class Auth:
                         lastname=data.get('lastname'))
         self._db.add(new_user)
         self._db.save()
-
         
     def create_session(self, user_id: str) -> str:
         '''
         Create and return a new session id for a logged-in user
         '''
         session_id = get_uid()
-        duration = timedelta(hours=12)
-        self._redis.setex(session_id, duration, user_id)
+        self._redis.setex(session_id, timedelta(hours=1), user_id)
         return session_id
 
     def destroy_session(self, session_id: str) -> None:
         '''
-        Destroy a user's session id from the cache durin logout
+        Destroy a user's session id from the cache during logout
         '''
         self._redis.delete(session_id)
 
@@ -215,7 +218,7 @@ class Auth:
             if entry.created_at >= start and entry.created_at < stop]
         current_month_insights = [
             insight for insight in all_insights
-            if insight.created_at > start and entry.created_at < stop]
+            if insight.created_at > start and insight.created_at < stop]
 
         journals = current_month_entries
         journals.extend(

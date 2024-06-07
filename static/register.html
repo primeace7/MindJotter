@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="./styles/body.css">
+    <link rel="stylesheet" href="styles/register.css">
+    <link rel="stylesheet" href="styles/nav.css">
+    <script src="scripts/register.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="home"><a href="./index.html" id="home-link">Mind Jotter</a></div>
+        <nav>
+            <input type="checkbox" id="sidebar-active">
+            <label for="sidebar-active" class="open-sidebar-button">
+                <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#000000"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+            </label>
+    
+            <label for="sidebar-active" id="overlay"></label>
+    
+            <div class="links-container">
+                <label for="sidebar-active" class="close-sidebar-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#000000"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </label>
+                <a href="index.html">Home</a>
+                <a href="login.html">Login</a> 
+                <a href="about.html">About</a>
+                <a href="./faq.html">FAQ</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="register-section">
+        <div class="wrapper">
+            <form class="register-form" id="registration-form">
+                <h1>Register</h1>
+                <div class="input-box">
+                    <input type="text" placeholder="Firstname (required)" required name="firstname">
+                </div>
+                <div class="input-box">
+                    <input type="text" placeholder="Lastname (optional)" name="lastname">
+                </div>
+                <div class="input-box">
+                    <input type="email" placeholder="Email (required)" required name="email">
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder="Password (required)" required name="password">
+                </div>
+                <div class="input-box">
+                    <input type="password" placeholder="Confirm password (required)" required name="confirm-password">
+                </div>
+
+                <button type="submit" class="btn" id="send">Register</button>
+
+                <div class="login-link">
+                    <p>
+                        Have an account? <a href="./login.html">Login</a> instead
+                    </p>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="alert-container-a">
+            <div class="alert">
+                <div class="alert-text">
+                    <p>This email is already registered. Please choose a different email or login if you've already registered.</p>
+                </div>
+            </div>
+        </div>
+        <div class="alert-container-b">
+            <div class="alert-pwd">
+                <div class="alert-text">
+                    <p>Password and Confirm password do not match. Please check and try again.</p>
+                </div>
+            </div>
+        </div>
+        <div class="alert-container-c">
+            <div class="alert-success">
+                <div class="alert-text">
+                    <p>Your registration was successful. You will now be redirected to login.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

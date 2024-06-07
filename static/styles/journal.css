@@ -1,0 +1,163 @@
+body {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+.sidenav {
+    width: 200px;
+    min-height: 100px;
+    border-right: 3px solid rgb(217, 217, 221);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body .pageview {
+    flex: 1;
+    padding-left: 10px;
+    border-left: none;
+}
+
+.chat-container {
+    background-color: inherit;
+    border-radius: 10px;
+    padding: 10px 10px;
+    position: relative;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    height: 96vh;
+}
+
+.chat-messages {
+    overflow-y: scroll;
+    gap: 4px;
+    display: flex;
+    flex-direction: column;
+    height: 90%;
+}
+
+.chat-messages::-webkit-scrollbar {
+    display: none;
+}
+
+.message {
+    padding: 5px 10px;
+    border-radius: 4px;
+    min-width: 20%;
+    max-width: 70%;
+    display: flex;
+    color: white;
+    flex-direction: column;
+    line-height: 20px;
+    height: fit-content;
+    margin: 4px 0;
+}
+
+.user {
+    align-self: flex-end;
+    text-align: start;
+    background-color: rgb(13, 7, 78);
+}
+
+.mindbot {
+    align-self: flex-start;
+    background-color: rgb(93, 168, 165);
+}
+
+.user .message-time{
+    text-align: right;
+}
+
+.message-sender {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.message-text {
+    font-size: 16px;
+    margin-bottom: 5px;
+    word-wrap: break-word;
+}
+
+.message-time {
+    font-size: 10px;
+}
+
+.chat-input-form {
+    display: flex;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    width: 95%;
+    min-width: 50px;
+    align-self: center;
+    margin-top: 10px;
+    position: absolute;
+    bottom: 5px;
+    gap: 5px;
+    
+}
+
+.chat-input {
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    background-color: aliceblue;
+    color: brown;
+    font-size: 16px;
+    max-height: 100px;
+    width: 100%;
+    min-width: 200px
+    /*flex-grow: 1;*/
+}
+
+#send-button {
+    background-image: url('../icons/send_24dp_FILL0_wght400_GRAD0_opsz24.svg');
+    background-repeat: no-repeat;
+    min-width: 70px;
+    background-position: center;
+    max-height: 70px;
+    align-self: flex-end;
+    
+}
+
+#send-button:hover {
+    background-color: rgba(13, 7, 78, 0.7);
+    box-shadow: 4px 4px 5px -2px rgba(13, 7, 78, 0.65);
+}
+
+textarea::-webkit-scrollbar {
+    display: none;
+}
+
+#sidebar-active,
+.open-sidebar-button,
+.close-sidebar-button {
+    display: none;
+    z-index: 0;
+}
+
+.links-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.links-container button,
+.home button {
+    margin: 0;
+    width: 90px;
+}
+
+.links-container a,
+.home {
+    margin: 10px auto;
+}
+
+.message-date {
+    margin: 5px auto;
+    font-size: 18px;
+    color: rgb(199, 198, 207);
+    border: none;
+}

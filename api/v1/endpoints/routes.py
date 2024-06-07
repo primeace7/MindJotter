@@ -2,9 +2,9 @@
 '''
 Define a blueprint that handles all the api routes/endpoints
 '''
-from flask import Blueprint, jsonify, make_response, request, abort
+from flask import Blueprint, jsonify, make_response, request, abort, url_for, redirect
 from ..auth.session_auth import Auth
-
+from ..ollama.inference import generate_insights
 
 
 incoming = Blueprint('incoming', __name__, url_prefix='/api/v1')
@@ -26,7 +26,8 @@ def status():
     '''
     Return the working status of the api service
     '''
-    return {'status': 'OK'}
+    result = make_response({'status': 'OK'})
+    return result
 
 @incoming.route('/user/login', strict_slashes=False, methods=['POST'])
 def login():
@@ -37,22 +38,24 @@ def login():
     
     user = auth.get_user(email=request.form.get('email'))
     session_id = auth.create_session(user.id)
-    response = make_response({'message': 'Logged in'})
-    response.set_cookie('session_id', value=session_id)
+    result = {'redirect': f"{request.host_url[:request.host_url.rfind(':')] + '/journal-area.html'}"}
+    result['session'] = session_id
 
-    return response
+    return result
     
 @incoming.route('/logout', strict_slashes=False, methods=['DELETE'])
 def logout():
     '''
     Log a user out and delete their session from the cache
     '''
-    session_id = request.cookies.get('session_id')
+    session_id = request.args.get('id')
 
     if session_id:
         auth.destroy_session(session_id)
 
-    return {'message': 'Logged out'}
+    result = {'redirect': f"{request.host_url[:request.host_url.rfind(':')] + '/login.html'}"}
+    result['message'] = 'Success'
+    return result
 
 @incoming.route('/journal', strict_slashes=False, methods=['GET'])
 def journal():
@@ -64,11 +67,14 @@ def journal():
     month = request.args.get('month')
 
     try:
+        session_id = request.args.get('id')
+        print('session_id from cookies: ', session_id)
         result = auth.get_journals(
-            session_id=request.cookies.get('session_id'),
+        session_id=session_id,
             year=year, month=month)
 
-        return jsonify(result)
+        result = make_response(jsonify(result))
+        return result
     except ValueError:
         abort(401)
 
@@ -83,16 +89,18 @@ def entries():
     DELETE: delete a previously-created entry
     PATCH: edit/modify a previously-created entry
     '''
-    session_id = request.cookies.get('session_id')
+    session_id = request.args.get('id')
+
     if not session_id:
-        print('session_id:', session_id)
+        print('session_id not found in request args')
         abort(401)
-    data = request.form
+    data = request.get_json()
     
     if request.method == 'POST':
         entry = data.get('entry')
         try:
             user_id = auth.get_userId_from_sessionId(session_id)
+            print('user found from session_id')
         except ValueError:
             abort(401)
 
@@ -111,10 +119,22 @@ def entries():
     'GET'])
 def generate_insight():
     '''
-    Generate an insight by making inference to an llm
+    Generate an insight by making inference to ollama
     with all of a user's journal entries for the current
     month
     '''
+    session_id = request.args.get('id')
+    result = generate_insights(session_id=session_id)
+    try:
+        user_id = auth.get_userId_from_sessionId(session_id=session_id)
+    except ValueError:
+        abort(401)
+
+    insight_id = auth.new_insight(insight=result, user_id=user_id)
+
+    result = make_response({'generated_insight': result, 'insight_id': insight_id})
+    result.content_type = 'text/plain'
+    return result
 
 
 @incoming.route('/user', strict_slashes=False, methods=[
@@ -133,6 +153,9 @@ def user():
     if request.method == 'POST':
         try:
             auth.new_user(request.form)
-            return {'message': 'Success'}
+            result = {'message': 'User created successfully'}
+            return result
         except ValueError:
-            return {'message': 'Email already registered'}
+            return {'message': 'Form is missing required field(s)'}, 400
+        except TypeError:
+            return {'message': 'Email is already registered'}, 409

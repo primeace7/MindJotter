@@ -1,0 +1,33 @@
+.loading-svg {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    align-self: center;
+    right: 40%;
+    visibility: hidden;
+}
+
+.loading-svg:nth-child(2) {
+    filter: blur(50px);
+}
+
+.loading-rect {
+    width: 100px;
+    height: 100px;
+    fill: none;
+    stroke-width: 100px;
+    stroke: orangered;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 50%;
+    animation: animate 2s ease-in-out infinite;
+}
+
+@keyframes animate {
+    to {
+        stroke-dashoffset: 250%;
+    }
+
+    from {
+        stroke: rgb(13, 7, 78);
+    }
+}

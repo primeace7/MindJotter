@@ -57,6 +57,8 @@ class DB():
         else:
             result = self._session.execute(
                 select(User).filter(User.id==user_id)).scalar()
+        if not result:
+            raise NoResultFound
 
         return result
 

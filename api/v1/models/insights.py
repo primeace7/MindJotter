@@ -23,4 +23,4 @@ class Insights(basemodel, Base):
     user: Mapped[User] = relationship(back_populates='insights')
 
     def __str__(self):
-        return f'Insight for user id {user.id}: {insight}'
+        return f'Insight for user id {self.user.id}: {self.insight}'

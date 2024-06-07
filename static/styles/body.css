@@ -1,0 +1,29 @@
+body {
+    background-color: #181d1ac5;
+    color: white;
+}
+
+button {
+    padding: 6px;
+    min-height: 40px;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    background-color: #0d074e;
+    border-radius: 6px;
+    margin: 8px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px -1px rgba(255, 255, 255, 0.65);
+}
+
+button:hover {
+    color: #0d074e;
+    background-color: white;
+    font-weight: bold;
+    box-shadow: 4px 4px 5px -2px rgba(13, 7, 78, 0.65);
+}
+
+button:active {
+    opacity: 0.8;
+    transform: translateY(2px);
+}

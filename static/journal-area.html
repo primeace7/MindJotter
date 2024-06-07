@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journals</title>
+    <link rel="stylesheet" href="styles/body.css">
+    <link rel="stylesheet" href="styles/journal.css">
+    <link rel="stylesheet" href="styles/loading.css">
+    <script src="scripts/app.js" defer></script>
+    <script src="scripts/logout.js" defer></script>
+    <script src="scripts/create_entry.js" defer></script>
+    <script src="scripts/generate-insights.js" defer></script>
+
+</head>
+<body>
+    <svg class="loading-svg">
+        <rect class="loading-rect"></rect>
+    </svg>
+    <svg class="loading-svg">
+        <rect class="loading-rect"></rect>
+    </svg>
+    <header class="sidenav">
+        <a href="index.html" class="home"><button>Home</button></a>
+        <nav>
+            <input type="checkbox" id="sidebar-active">
+            <label for="sidebar-active" class="open-sidebar-button">
+                <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#000000"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+            </label>
+    
+            <label for="sidebar-active" id="overlay"></label>
+    
+            <div class="links-container">
+                <label for="sidebar-active" class="close-sidebar-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#000000"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </label>
+                <a href="#"><button id="logout">Logout</button></a>
+                <a href="#"><button id="generate-insights">Generate Insights</button></a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="pageview">
+        <div class="chat-container">
+
+            <div class="chat-messages">
+            </div>
+
+            <form class="chat-input-form">
+                <textarea type="text" class="chat-input" required placeholder="Type your entry here"></textarea>
+                <button id="send-button"></button>
+            </form>
+        </div>
+    </section>
+</body>
+</html>

@@ -27,4 +27,4 @@ class User(basemodel, Base):
     def __str__(self):
         return f'id: {self.id}, email: {self.email}, firstname:' +\
             f' {self.firstname}, Entries: {self.entries},' +\
-            f'Insights: {self.insights}'
+            f'Insights: {self.insights}, ' + f'created_at: {self.created_at}'

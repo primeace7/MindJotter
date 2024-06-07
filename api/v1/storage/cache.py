@@ -4,5 +4,5 @@ Create a Redis instance for caching
 '''
 import redis
 
-redis_cache = redis.Redis(db=10)
+redis_cache = redis.Redis()
 

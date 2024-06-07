@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./styles/body.css">
+    <link rel="stylesheet" href="styles/login.css">
+    <link rel="stylesheet" href="styles/nav.css">
+    <script src="scripts/login.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="home"><a href="./index.html" id="home-link">Mind Jotter</a></div>
+        <nav>
+            <input type="checkbox" id="sidebar-active">
+            <label for="sidebar-active" class="open-sidebar-button">
+                <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#000000"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+            </label>
+    
+            <label for="sidebar-active" id="overlay"></label>
+    
+            <div class="links-container">
+                <label for="sidebar-active" class="close-sidebar-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#000000"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </label>
+                <a href="index.html">Home</a>
+                <a href="register.html">Get Started</a>
+                <a href="about.html">About</a>
+                <a href="./faq.html">FAQ</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="login-form">
+        <div class="wrapper">
+            <form id="login-form">
+                <h1>Login</h1>
+                <div class="input-box">
+                    <input type="email" placeholder="Email" required name="email">
+                    <svg class="person-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z"/></svg>
+                </div>
+
+                <div class="input-box">
+                    <input type="password" placeholder="Password" required name="password">
+                    <svg class="password-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed"><path d="M240-80q-33 0-56.5-23.5T160-160v-400q0-33 23.5-56.5T240-640h40v-80q0-83 58.5-141.5T480-920q83 0 141.5 58.5T680-720v80h40q33 0 56.5 23.5T800-560v400q0 33-23.5 56.5T720-80H240Zm0-80h480v-400H240v400Zm240-120q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM360-640h240v-80q0-50-35-85t-85-35q-50 0-85 35t-35 85v80ZM240-160v-400 400Z"/></svg>
+                </div>
+
+                <div class="remember-forgot">
+                    <label><input type="checkbox" name="remember_me">Remember Me</label>
+                    <a href="reset-password.html">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn">Login</button>
+
+                <div class="register-link">
+                    <p>
+                        Don't have an account? <a href="register.html">Create one now</a>
+                    </p>
+                </div>
+
+            </form>
+        </div>
+    </section>
+    <div class="alert-container">
+        <div class="alert">
+            <div class="alert-text">
+                <p>Wrong Email/Password. Please check and try again, or create an account if you don't have one.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
