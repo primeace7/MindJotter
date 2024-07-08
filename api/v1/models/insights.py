@@ -7,6 +7,7 @@ from . import User
 from sqlalchemy import ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, relationship, mapped_column
 from .base import basemodel, Base
+import time
 
 
 class Insights(basemodel, Base):

@@ -44,11 +44,9 @@ class Auth:
         try:
             user = self._db.find_user(email=email)
             if check_password_hash(user.hashed_password, password):
-                print('password is okay')
                 return True
             return False
         except NoResultFound:
-            print('NO user found')
             return False
 
     def get_userId_from_sessionId(self, session_id: str) -> str | None:
@@ -58,7 +56,6 @@ class Auth:
         '''
         user_id = self._redis.get(session_id)
         if not user_id:
-            print('user_id not found from session_id')
             raise ValueError
         return user_id.decode()
 
@@ -81,14 +78,12 @@ class Auth:
         Get all entries of a specific user from the database,
         given the user's session_id
         '''
-        print(f'looking for this session id in cache {session_id}')
         user_id = self._redis.get(session_id)
 
         if not user_id:
             raise ValueError
         
         user_id = user_id.decode()
-        print(f'found user id from session_id in cache: {user_id}')
         
         user = self.get_user(user_id=user_id)
         return user.entries
@@ -98,7 +93,6 @@ class Auth:
         Get all insights generated for a specific user from
         the database, given the user's session_id
         '''
-        print(f'looking for this session id in cache {session_id}')
         user_id = self._redis.get(session_id)
 
         if not user_id:
@@ -222,7 +216,8 @@ class Auth:
         journals = current_month_entries
         journals.extend(
             current_month_insights)
-        journals.sort(key=lambda obj: obj.created_at)
+
+        journals.sort(key=lambda obj: obj.timestamp)
 
         journals_json = {}
         fmt = '%A %B %d'

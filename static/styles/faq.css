@@ -38,14 +38,14 @@ input[type="radio"] {
 .accordion .answer {
     padding: 0 10px;
     line-height: 26px;
-    height: fit-content;
+    max-height: 0;
     overflow: hidden;
-    transition: min-height 1s, padding 1s;
+    transition: max-height 1s, padding 1s;
     font-size: 22px;
 }
 
 .accordion input[type="radio"]:checked + label + .answer {
-    min-height: 120px;
+    max-height: 120px;
     padding: 10px 10px 20px;
 }
 

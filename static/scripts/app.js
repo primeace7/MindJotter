@@ -2,11 +2,12 @@ const chatMessages = document.querySelector('.chat-messages');
 const chatInputForm = document.querySelector('.chat-input-form');
 const chatInput = document.querySelector('.chat-input');
 const chatContainer = document.querySelector('.chat-container');
-const holder = [];
+
+chatMessages.scrollTop = chatMessages.scrollHeight;
 
 // Generate a templated journal entry HTML code to be added to the DOM
 function newInputHtml (msg) { 
-    msgDate = new Date(msg.created_at);
+    msgDate = new Date(msg.timestamp * 1000 );
     const timestamp = msgDate.toLocaleString(navigator.language, { hour: 'numeric', minute: 'numeric', hour12: true });
     return `
     <div class="message ${msg.entry === undefined ? 'mindbot' : 'user'}" id='${msg.id}'>
@@ -47,6 +48,6 @@ fetch(oldJournalsReq)
         
         val.forEach(elem => chatMessages.innerHTML += newInputHtml(elem));  
         lastEntry.push(val[val.length - 1]);
-        lastEntry.shift();
+        console.log(new Date(val.timestamp).toString());
     });
 })

@@ -6,6 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import basemodel, Base
 from sqlalchemy import Text, ForeignKey, String
 from . import User
+import time
 
 
 class Entries(basemodel, Base):

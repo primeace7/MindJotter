@@ -10,7 +10,7 @@ from ..models.user import User
 from ..models.insights import Insights
 from ..models.entries import Entries
 from ..models.base import Base
-from typing import Mapping, TypeAlias
+from typing import Mapping
 import os
 
 

@@ -68,7 +68,6 @@ def journal():
 
     try:
         session_id = request.args.get('id')
-        print('session_id from cookies: ', session_id)
         result = auth.get_journals(
         session_id=session_id,
             year=year, month=month)
@@ -92,7 +91,6 @@ def entries():
     session_id = request.args.get('id')
 
     if not session_id:
-        print('session_id not found in request args')
         abort(401)
     data = request.get_json()
     
@@ -100,7 +98,6 @@ def entries():
         entry = data.get('entry')
         try:
             user_id = auth.get_userId_from_sessionId(session_id)
-            print('user found from session_id')
         except ValueError:
             abort(401)
 

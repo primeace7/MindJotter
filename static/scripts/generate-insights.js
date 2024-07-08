@@ -3,9 +3,9 @@ const insightsBtn = document.getElementById('generate-insights');
 const generate = (e) => {
     e.preventDefault();
     const animation = document.querySelector('.loading-svg');
-    animation.style.visibility = 'visible';
+    const body = document.querySelector('body');
 
-    const timestamp = new Date().toLocaleString(navigator.language, { hour: 'numeric', minute: 'numeric', hour12: true });
+    animation.style.visibility = 'visible';
     
     const params = new URLSearchParams();
     params.set('id', localStorage.getItem('session'));
@@ -23,20 +23,22 @@ const generate = (e) => {
     fetch(request)
     .then(msg => msg.json())
     .then(msg => {
+        const timestamp = new Date().toLocaleString(navigator.language, { hour: 'numeric', minute: 'numeric', hour12: true });
         const message = {
             sender: 'Mindbot',
             text: msg.generated_insight,
             timestamp
         }
 
-        console.log(message.text);
-        const formattedText = message.text.replace(/\*\*(.+?)\*\*/g, "<h3>$1</h3>")
-        .replace(/What you did well:/g, "<br><strong>What you did well:</strong>")
-        .replace(/What you could improve:/g, "<br><strong>What you could improve:</strong>")
-        .replace(/Observable patterns:/g, "<br><strong>Observable patterns:</strong>")
-        .replace(/Observations:/g, "<br><strong>Observations:</strong>")
-        .replace(/Suggestions:/g, "<br><strong>Suggestions:</strong>");
-
+        // console.log(message.text);
+        const formattedText = message.text.replace(/\*\*(.+?)\*\*/g, "<h2>$1</h2>")
+        .replace(/What you did well:/g, "<b>What you did well:</b>")
+        .replace(/What you could improve:/g, "<b>What you could improve:</b>")
+        .replace(/What you could do better:/g, "<b>What you could do better:</b>")
+        .replace(/Observable patterns:/g, "<b>Observable patterns:</b>")
+        .replace(/Observations:/g, "<b>Observations:</b>")
+        .replace(/Suggestions:/g, "<b>Suggestions:</b>")
+        .replace(/\*/g, "");
 
         chatMessages.innerHTML += `
         <div class="message ${message.sender === 'Mindbot' ? 'mindbot' : 'user'}">
@@ -47,7 +49,26 @@ const generate = (e) => {
         `;
         chatMessages.scrollTop = chatMessages.scrollHeight;
         animation.style.visibility = 'hidden';
-    });
+        return formattedText
+    })
+    .then(insight => {
+        const update = new Request(url, {
+            method: 'POST',
+            mode: "cors",
+            body: JSON.stringify({insight: insight}),
+            headers: new Headers({'content-type': 'application/json'}),
+        });
+        
+        fetch(update)
+        .then(resp => {
+            if (resp.status !== 200)
+                alert('An error occured while saving the insight on the database');
+        })
+    })
+    .catch(e => {
+        animation.style.visibility = 'hidden';
+        alert('There was an error. Please try again.');
+    })
 
 }
 
